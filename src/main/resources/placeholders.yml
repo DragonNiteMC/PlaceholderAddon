@@ -1,0 +1,8 @@
+placeholders:
+  gsg:
+    table: "gamestats"
+    uuid: "player_uuid"
+    columns:
+      - kills:Kills
+      - wins:Wins
+      - deaths:Deaths

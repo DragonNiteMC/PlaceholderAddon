@@ -1,0 +1,8 @@
+name: PlaceholderAddon
+main: com.ericlam.mc.placeholder.addon.PapiAddon
+version: ${project.version}
+depend: [PlaceholderAPI, HyperNiteMC-Core]
+author: Hydranapse_
+commands:
+  papi-addon:
+    description: placeholder addon commands
