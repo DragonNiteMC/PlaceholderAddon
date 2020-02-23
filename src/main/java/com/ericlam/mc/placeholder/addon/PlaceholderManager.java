@@ -20,7 +20,7 @@ public class PlaceholderManager {
 
     PlaceholderManager(PapiAddonConfig config) {
         this.sqlDataSource = HyperNiteMC.getAPI().getSQLDataSource();
-        this.placeholderMap = config.placeholders;
+        this.placeholderMap = Optional.ofNullable(config.placeholders).orElse(Map.of());
     }
 
     // this.getPlaceholder("gsg", "kills") --> %papiaddon_gsg_kills%
@@ -78,8 +78,8 @@ public class PlaceholderManager {
                     String[] plus = stat.column.split("\\+");
                     if (plus.length < 2) {
                         result.put(game + "_" + stat.placeholder, hasData ? set.getObject(stat.column).toString() : stat.def);
-                    }else{
-                        result.put(game + "_" + stat.placeholder, (Integer.parseInt(result.get(game+"_"+plus[0])) + Integer.parseInt(result.get(game+"_"+plus[1]))+""));
+                    } else {
+                        result.put(game + "_" + stat.placeholder, (Integer.parseInt(result.get(game + "_" + plus[0])) + Integer.parseInt(result.get(game + "_" + plus[1])) + ""));
                     }
                 }
                 this.gameStats.put(player, result);
