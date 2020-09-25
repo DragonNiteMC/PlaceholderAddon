@@ -2,25 +2,21 @@ package com.ericlam.mc.placeholder.addon;
 
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.UUID;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.function.Consumer;
 
 public class PlaceholderUpdateRunnable extends BukkitRunnable {
-    private final PlaceholderManager placeholderManager;
-    private final UUID player;
-    private final ConcurrentLinkedQueue<String> games;
+    private final Consumer<UpdateAction> asyncRun;
+    private final ConcurrentLinkedQueue<UpdateAction> actions;
 
-    public PlaceholderUpdateRunnable(PlaceholderManager placeholderManager, UUID player, ConcurrentLinkedQueue<String> games) {
-        this.placeholderManager = placeholderManager;
-        this.player = player;
-        this.games = games;
+    public PlaceholderUpdateRunnable(Consumer<UpdateAction> asyncRun, ConcurrentLinkedQueue<UpdateAction> actions) {
+        this.asyncRun = asyncRun;
+        this.actions = actions;
     }
 
     @Override
     public void run() {
-        String game = games.poll();
-        if (game != null) {
-            placeholderManager.takePlaceholderFromSQL(player, game);
-        }
+        UpdateAction action = actions.poll();
+        if (action != null) asyncRun.accept(action);
     }
 }

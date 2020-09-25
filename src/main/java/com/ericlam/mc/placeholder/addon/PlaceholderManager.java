@@ -8,11 +8,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.stream.Collectors;
 
 public class PlaceholderManager {
     private final Map<String, PapiAddonConfig.Placeholder> placeholderMap;
-    private final Map<UUID, Map<String, String>> gameStats = new HashMap<>();
+    private final Map<UUID, Map<String, String>> gameStats = new ConcurrentHashMap<>();
+    private final ConcurrentLinkedQueue<UpdateAction> updateQueue = new ConcurrentLinkedQueue<>();
     private final SQLDataSource sqlDataSource;
     private final PapiAddonConfig papiAddonConfig;
     private final PapiAddon plugin;
@@ -29,16 +32,22 @@ public class PlaceholderManager {
         return Optional.ofNullable(gameStats.get(player)).map(map -> map.get(game + "_" + stats)).orElse("0");
     }
 
+    void offer(UpdateAction action) {
+        this.updateQueue.offer(action);
+        new PlaceholderUpdateRunnable(this::takePlaceholderFromSQL, updateQueue).runTaskAsynchronously(plugin);
+    }
 
     void refreshPlayer(UUID player) {
-        new PlayerUpdateRunnable(plugin, player, papiAddonConfig).runTask(plugin);
+        papiAddonConfig.placeholders.keySet().forEach(game -> offer(new UpdateAction(player, game)));
     }
 
     void refreshPlayers() {
         gameStats.keySet().forEach(this::refreshPlayer);
     }
 
-    void takePlaceholderFromSQL(UUID player, String game) {
+    private void takePlaceholderFromSQL(final UpdateAction action) {
+        final UUID player = action.player;
+        final String game = action.game;
         if (!this.placeholderMap.containsKey(game)) return;
         PapiAddonConfig.Placeholder placeholder = this.placeholderMap.get(game);
         final String table = placeholder.table;
