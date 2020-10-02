@@ -27,8 +27,7 @@ public class BungeePlaceholder extends PlaceholderExpansion implements PluginMes
         String[] servers = params.split(":");
         int result = 0;
         for (String server : servers) {
-            this.playerCount.putIfAbsent(server, 0);
-            result += this.playerCount.get(server);
+            result += this.playerCount.getOrDefault(server, 0);
         }
         return result+"";
     }
@@ -64,4 +63,8 @@ public class BungeePlaceholder extends PlaceholderExpansion implements PluginMes
         return plugin.getDescription().getVersion();
     }
 
+    @Override
+    public boolean persist() {
+        return true;
+    }
 }
