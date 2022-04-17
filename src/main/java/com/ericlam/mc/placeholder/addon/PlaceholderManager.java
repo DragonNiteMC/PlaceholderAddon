@@ -1,7 +1,7 @@
 package com.ericlam.mc.placeholder.addon;
 
-import com.hypernite.mc.hnmc.core.main.HyperNiteMC;
-import com.hypernite.mc.hnmc.core.managers.SQLDataSource;
+import com.dragonnite.mc.dnmc.core.main.DragonNiteMC;
+import com.dragonnite.mc.dnmc.core.managers.SQLDataSource;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -23,7 +23,7 @@ public class PlaceholderManager {
     PlaceholderManager(PapiAddon plugin, PapiAddonConfig papiAddonConfig) {
         this.plugin = plugin;
         this.papiAddonConfig = papiAddonConfig;
-        this.sqlDataSource = HyperNiteMC.getAPI().getSQLDataSource();
+        this.sqlDataSource = DragonNiteMC.getAPI().getSQLDataSource();
         this.placeholderMap = Optional.ofNullable(papiAddonConfig.placeholders).orElse(Map.of());
     }
 

@@ -1,13 +1,13 @@
 package com.ericlam.mc.placeholder.addon;
 
-import com.hypernite.mc.hnmc.core.main.HyperNiteMC;
-import com.hypernite.mc.hnmc.core.managers.CoreConfig;
-import com.hypernite.mc.hnmc.core.managers.YamlManager;
-import com.hypernite.mc.hnmc.core.misc.commands.CommandNode;
-import com.hypernite.mc.hnmc.core.misc.commands.CommandNodeBuilder;
-import com.hypernite.mc.hnmc.core.misc.commands.DefaultCommand;
-import com.hypernite.mc.hnmc.core.misc.commands.DefaultCommandBuilder;
-import com.hypernite.mc.hnmc.core.misc.permission.Perm;
+import com.dragonnite.mc.dnmc.core.main.DragonNiteMC;
+import com.dragonnite.mc.dnmc.core.managers.CoreConfig;
+import com.dragonnite.mc.dnmc.core.managers.YamlManager;
+import com.dragonnite.mc.dnmc.core.misc.commands.CommandNode;
+import com.dragonnite.mc.dnmc.core.misc.commands.CommandNodeBuilder;
+import com.dragonnite.mc.dnmc.core.misc.commands.DefaultCommand;
+import com.dragonnite.mc.dnmc.core.misc.commands.DefaultCommandBuilder;
+import com.dragonnite.mc.dnmc.core.misc.permission.Perm;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
@@ -23,14 +23,14 @@ public class PapiAddon extends JavaPlugin implements Listener {
 
     @Override
     public void onEnable() {
-        YamlManager configManager = HyperNiteMC.getAPI().getFactory().getConfigFactory(this)
+        YamlManager configManager = DragonNiteMC.getAPI().getFactory().getConfigFactory(this)
                 .register("placeholders.yml", PapiAddonConfig.class).dump();
 
         PapiAddonConfig papiAddonConfig = configManager.getConfigAs(PapiAddonConfig.class);
         manager = new PlaceholderManager(this, papiAddonConfig);
 
         new PlaceholderExtender(this, manager).register();
-        HyperNiteMC.getAPI().getCommandRegister().registerCommand(this, this.getCommand());
+        DragonNiteMC.getAPI().getCommandRegister().registerCommand(this, this.getCommand());
         this.getServer().getPluginManager().registerEvents(this, this);
         BungeePlaceholder bungeePlaceholder = new BungeePlaceholder(this);
         this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
@@ -39,7 +39,7 @@ public class PapiAddon extends JavaPlugin implements Listener {
     }
 
     private DefaultCommand getCommand() {
-        CoreConfig cf = HyperNiteMC.getAPI().getCoreConfig();
+        CoreConfig cf = DragonNiteMC.getAPI().getCoreConfig();
         CommandNode node = new CommandNodeBuilder("refresh")
                 .placeholder("[player]")
                 .description("強制手動更新玩家/所有玩家的 placeholder 資料")
