@@ -1,7 +1,7 @@
 package com.ericlam.mc.placeholder.addon;
 
-import com.dragonnite.mc.dnmc.core.config.yaml.Configuration;
-import com.dragonnite.mc.dnmc.core.config.yaml.Resource;
+import com.dragonite.mc.dnmc.core.config.yaml.Configuration;
+import com.dragonite.mc.dnmc.core.config.yaml.Resource;
 
 import java.util.List;
 import java.util.Map;

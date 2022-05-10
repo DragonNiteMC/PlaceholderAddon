@@ -1,7 +1,7 @@
 name: PlaceholderAddon
 main: com.ericlam.mc.placeholder.addon.PapiAddon
 version: ${project.version}
-depend: [PlaceholderAPI, DragonNiteMC-Core]
+depend: [PlaceholderAPI, DragoniteMC-Core]
 api-version: "1.15"
 author: Hydranapse_
 commands:
